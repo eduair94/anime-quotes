@@ -19,7 +19,7 @@ const hideSpinner = () => {
 const get_data = async () => {
     showSpinner();
     const data = await fetch(URL).catch(e=> {
-        console.log(URL, e);
+        alert("Request blocked");
         return {
             ok: false
         }
@@ -46,7 +46,6 @@ const set_pos = (idx) => {
 }
 
 const toggle_previous_btn = (idx) => {
-    console.log("IDX", idx);
     if(idx > 0 && button_before.disabled) {
         button_before.disabled = false;
     } else if(idx === 0 && !button_before.disabled) {
@@ -54,15 +53,21 @@ const toggle_previous_btn = (idx) => {
     }
 }
 
+const load_item = async () => {
+    let item = await get_data();
+    if(item) arrayCitas.push(item);
+    set_total();   
+    return item;   
+}
+
+load_item();
 document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', async (event) => { 
         if(!arrayCitas.length) idx = 0;
         else idx++;
         let item = arrayCitas[idx];
         if(!item) {
-            item = await get_data();
-            if(item) arrayCitas[idx] = item;
-            set_total();
+            item = await load_item();
         } 
         toggle_previous_btn(idx);
         show_quote(item);
