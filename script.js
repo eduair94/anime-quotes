@@ -40,6 +40,15 @@ const set_pos = (idx) => {
     document.getElementById("pos").innerHTML = idx + 1;
 }
 
+const toggle_previous_btn = (idx) => {
+    console.log("IDX", idx);
+    if(idx > 0 && button_before.disabled) {
+        button_before.disabled = false;
+    } else if(idx === 0 && !button_before.disabled) {
+        button_before.disabled = true;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', async (event) => { 
         if(!arrayCitas.length) idx = 0;
@@ -50,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(item) arrayCitas[idx] = item;
             set_total();
         } 
+        toggle_previous_btn(idx);
         show_quote(item);
         set_pos(idx);
     });
@@ -61,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data) {
                 show_quote(data);
             }
+            toggle_previous_btn(idx);
             set_pos(idx);
         }
     });
