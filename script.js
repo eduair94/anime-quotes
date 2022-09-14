@@ -32,20 +32,26 @@ const show_quote = ({anime, character, quote}) => {
     quoteB.querySelector('.from').innerHTML = anime;
 }
 
+const set_total = () => {
+    document.getElementById("total").innerHTML = arrayCitas.length;
+}
+
+const set_pos = (idx) => {
+    document.getElementById("pos").innerHTML = idx + 1;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', async (event) => { 
-        if(!arrayCitas.length) {
-            idx = 0;
-        } else {
-            idx++;
-        }
-        const item = arrayCitas[idx];
-        if(item) return show_quote(item);
-        const data = await get_data();
-        if(data) {
-            arrayCitas[idx] = data;
-            show_quote(data);
-        }
+        if(!arrayCitas.length) idx = 0;
+        else idx++;
+        let item = arrayCitas[idx];
+        if(!item) {
+            item = await get_data();
+            if(item) arrayCitas[idx] = item;
+            set_total();
+        } 
+        show_quote(item);
+        set_pos(idx);
     });
 
     button_before.addEventListener('click', async (event) => { 
@@ -55,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data) {
                 show_quote(data);
             }
+            set_pos(idx);
         }
     });
 });
