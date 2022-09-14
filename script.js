@@ -18,7 +18,12 @@ const hideSpinner = () => {
 
 const get_data = async () => {
     showSpinner();
-    const data = await fetch(URL);
+    const data = await fetch(URL).catch(e=> {
+        console.log(URL, e);
+        return {
+            ok: false
+        }
+    });
     if(data.ok) {
         hideSpinner();
         const json = await data.json();
